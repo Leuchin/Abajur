@@ -1,8 +1,11 @@
 #define medio 3
 #define alto 4
 #define baixo 2
-float som = A0;
-float valor_som = 0.0;
+float som;
+float max_v = 5.0;
+float min_v = 0.0;
+float max_s = 86.0;
+float min_s = 58.0;
 
 void setup()
 {
@@ -15,33 +18,26 @@ void setup()
   
 }void loop(){
   
-  valor_som = analogRead(A0);
+  som = (analogRead(A0)*5)/1023;
+  som = map(som,max_v,min_v,max_s,min_s);
   Serial.print("Valor atual do som e:");
-  Serial.println(valor_som);
-  if ( valor_som < 300){
-    
-    Serial.println("Som esta baixo");
-    digitalWrite(baixo,HIGH);
-    digitalWrite(medio,LOW);
-    digitalWrite(alto,LOW);
-    
-  }else if ( 700 < valor_som ){
-    
-    Serial.println("Som esta alto");
+  Serial.println(som);
+  
+  Serial.println(som);
+ if (som > 72.0){
     digitalWrite(alto,HIGH);
     digitalWrite(baixo,LOW);
-    digitalWrite(medio,LOW);
-
-    
-   }else{
-    
-  	  Serial.println("Som esta medio");
-    digitalWrite(medio,HIGH);
+    digitalWrite(medio, HIGH);
+  }
+  else if (som < 40.0){
+    digitalWrite(baixo,HIGH);
+    digitalWrite(alto,LOW);
+    digitalWrite(medio, LOW);
+  }
+  else{
     digitalWrite(baixo,LOW);
     digitalWrite(alto,LOW);
-    
-   }
-  
+    digitalWrite(medio, HIGH);
+  }
   delay(500);
-  
 }
